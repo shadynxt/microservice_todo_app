@@ -1,0 +1,17 @@
+{
+  "name": "public",
+  "authors": [
+    "shadynxt <shadymohammed966@gmail.com>"
+  ],
+  "description": "todo",
+  "main": "index.php",
+  "license": "MIT",
+  "homepage": "index.php",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
