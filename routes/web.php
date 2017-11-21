@@ -11,6 +11,12 @@
 |
 */
 
+Route::get('/logout', 'HomeController@destroy');
+
 Route::get('/', 'TodosController@index');
 
 Route::resource('todo', 'TodosController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
