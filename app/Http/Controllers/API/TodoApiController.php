@@ -16,14 +16,9 @@ class TodoApiController extends AppBaseController
 {
     public function index(Request $request)
     {
-        $user = auth()->user();
-		if($user->role == 1){
-			 $todos = Todo::orderBy('created_at', 'desc')->get();
-		}
-		else
-		{
-			$todos = Todo::orderBy('created_at', 'desc')->where("user_id",$user->id)->get();
-		}
+        
+		$todos = Todo::orderBy('created_at', 'desc')->get();
+		
       
         
         return $this->sendResponse($todos->toArray());
