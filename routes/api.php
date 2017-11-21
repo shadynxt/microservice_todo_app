@@ -25,11 +25,6 @@ Route::post('/login', ['as' => 'auth.login', 'uses' => 'API\UserApiController@lo
 
 
 
-
-
-
-
-
 Route::group(['prefix'=>'todos'],function(){ /* messages Routes */
 	Route::get('index', 'API\TodoApiController@index');
 

@@ -6,7 +6,7 @@ use App\Http\Controllers\AppBaseController;
 use App\User;
 use App\Todo;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\API\ApiTodoRequest;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Lang;
@@ -16,13 +16,20 @@ class TodoApiController extends AppBaseController
 {
     public function index(Request $request)
     {
-         $todos = Todo::orderBy('created_at', 'desc')->get();
+        $user = auth()->user();
+		if($user->role == 1){
+			 $todos = Todo::orderBy('created_at', 'desc')->get();
+		}
+		else
+		{
+			$todos = Todo::orderBy('created_at', 'desc')->where("user_id",$user->id)->get();
+		}
       
         
         return $this->sendResponse($todos->toArray());
     }
 
-    public function create(Request $request){
+    public function create(ApiTodoRequest $request){
 
     	//$services = Service::find($request->input('id'));
 
@@ -34,6 +41,7 @@ class TodoApiController extends AppBaseController
         }
 
         $todo = new Todo();
+		$todo->user_id = $user->id;
         $todo->text = $request->input('text');
         $todo->body = $request->input('body');
         $todo->due = $request->input('due');
@@ -44,11 +52,12 @@ class TodoApiController extends AppBaseController
 
     }
 
-    public function update(Request $request,$id)
+    public function update(ApiTodoRequest $request,$id)
     {
         $todo = Todo::find($id);
         
         $user = auth()->user();
+		
         if (!$user) {
             return $this->sendError('Please login !', 401);
         }
@@ -61,7 +70,7 @@ class TodoApiController extends AppBaseController
     }
 
 
-    public function delete(ApiServiceRequest $request,$id)
+    public function delete(Request $request,$id)
     {
     	$todo = Todo::find($id)->delete();
 
