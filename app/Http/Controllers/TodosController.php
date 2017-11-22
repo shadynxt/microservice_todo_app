@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Todo;
+use App\User;
 
 class TodosController extends Controller
 {
@@ -81,8 +82,25 @@ class TodosController extends Controller
      */
     public function show($id)
     {
-        $todo = Todo::find($id);
-        return view('todos.show')->with('todo', $todo);
+		$user =auth()->user();
+		//dd($user);
+		if($user->role == 0){
+			$todo = Todo::where('id','=',$id)->Where('user_id',$user->id)->first();
+			if(!empty($todo)){
+				$todo = Todo::where('id',$id)->first();
+				return view('todos.show')->with('todo', $todo);
+			}
+			else
+			{
+				return redirect('/')->with('error','CSRF SUCKS! , You are not authorized to view that todo');
+			}
+		}
+		else{
+			$todo = Todo::where('id',$id)->first();
+			return view('todos.show')->with('todo', $todo);
+		}
+        //$todo = Todo::find($id);
+        //return view('todos.show')->with('todo', $todo);
     }
 
     /**
