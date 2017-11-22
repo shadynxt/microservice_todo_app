@@ -60,7 +60,7 @@ class TodoApiController extends AppBaseController
 
         $inputs = $request->all();
 
-        $Todo->update($inputs);
+        $todo->update($inputs);
         return $this->sendResponse($todo->toArray(), 'Todo updated successfully');
     }
 
